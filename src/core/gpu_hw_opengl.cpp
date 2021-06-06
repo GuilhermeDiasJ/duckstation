@@ -1165,7 +1165,7 @@ void GPU_HW_OpenGL::UpdateVRAM(u32 x, u32 y, u32 width, u32 height, const void* 
       return;
     }
 
-    if (g_settings.texture_replacements.enable_texture_replacements)
+    if (m_texture_replacements)
       g_texture_replacements.UploadReplacementTextures(x, y, width, height, data);
   }
 

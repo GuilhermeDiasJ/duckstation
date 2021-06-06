@@ -332,8 +332,8 @@ void GPU_HW_Vulkan::UploadTextureReplacement(u32 page_index, u32 page_x, u32 pag
 
   // buffer -> texture
   VkCommandBuffer cmdbuf = g_vulkan_context->GetCurrentCommandBuffer();
-  m_vram_write_replacement_texture.UpdateFromBuffer(cmdbuf, 0, 0, page_x, page_y, data_width, data_height,
-                                                    m_texture_replacment_stream_buffer.GetBuffer(), buffer_offset);
+  m_texture_replacement_texture.UpdateFromBuffer(cmdbuf, 0, page_index, page_x, page_y, data_width, data_height,
+                                                 m_texture_replacment_stream_buffer.GetBuffer(), buffer_offset);
 }
 
 void GPU_HW_Vulkan::InvalidateTextureReplacements()
@@ -1693,6 +1693,9 @@ void GPU_HW_Vulkan::UpdateVRAM(u32 x, u32 y, u32 width, u32 height, const void* 
     {
       return;
     }
+
+    if (m_texture_replacements)
+      g_texture_replacements.UploadReplacementTextures(x, y, width, height, data);
   }
 
   const u32 data_size = width * height * sizeof(u16);
